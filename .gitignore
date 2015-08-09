@@ -62,3 +62,5 @@ target/
 /examples/*
 /sleekxmpp/*
 /tests/*
+/pyasn1*/*
+/dns/*
