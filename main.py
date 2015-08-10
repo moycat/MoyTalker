@@ -73,9 +73,11 @@ def listen():
                 else:
                     tmpMsg = newMsg[toNum]
                     print("[Message No.%s]\nFrom: %s\nBody:\n%s\n" % (toNum, tmpMsg['from'], tmpMsg['body']))
+                    fom = str(tmpMsg['from'])
+                    to = fom.split('/', 1)[0]
                     content = input("Your reply: ")
                     if content:
-                        tmpMsg.reply(content).send()
+                        xmpp.send_message(mto=to, mbody=content, mtype='chat')
                         print("Seccessful!")
                     else:
                         print("No input!")
@@ -86,9 +88,11 @@ def listen():
                 toNum = newMsgCount - 1
                 tmpMsg = newMsg[toNum]
                 print("[Message No.%s]\nFrom: %s\nBody:\n%s\n" % (toNum, tmpMsg['from'], tmpMsg['body']))
+                fom = str(tmpMsg['from'])
+                to = fom.split('/', 1)[0]
                 content = input("Your reply: ")
                 if content:
-                    tmpMsg.reply(content).send()
+                    xmpp.send_message(mto=to, mbody=content, mtype='chat')
                     print("Seccessful!")
                 else:
                     print("No input!")
@@ -109,7 +113,7 @@ def listen():
             break
         else:
             continue
-        tmp = input("\n<Press any key to continue...>")
+        tmp = input("\n<Press enter to continue...>")
 
 def guard():
     global connected
