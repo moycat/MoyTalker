@@ -1,6 +1,6 @@
 # MoyTalker
 
-MoyTalker is a python XMPP client. Requiring the library SleekXMPP.
+MoyTalker is a python XMPP client. Requiring the library SleekXMPP. (OTR not available now)
 
 Please install the SleekXMPP library or copy the "SleekXMPP" directory to the root of MoyTalker.
 
@@ -15,6 +15,8 @@ You should get the following things in the root directory, so that you can get b
 1.dnspython (http://www.dnspython.org/kits3/1.12.0/)
 
 Get the latest version stable for Python 3. Copy the "dns" directory to the root.
+
+**For users in the GFW of China: 如果在墙内，请不要安装此模块，否则可能导致无法连接。请安装下面的模块来增强安全性。**
 
 2.pyasn1 and pyasn1_modules (http://sourceforge.net/projects/pyasn1/files/?source=navbar)
 
