@@ -26,6 +26,12 @@ Get the latest version then copy "pyasn1" directory and "pyasn1_modules" directo
 
 I think it can be easy to use. Once you run it, you know it...
 
+# TODO
+
+1.OTR support.
+
+2.Telephone directory support.
+
 # Idea
 
 I like shell, and I like chatting.
