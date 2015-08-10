@@ -44,8 +44,10 @@ def listen():
     while 1:
         print("=================")
         print("Now you have", newMsgCount, "received massages.")
-        print("1:Refresh\n2:Show all messages\n3.Show the latest message\n4.Reply a message\n5.Send a message\n6.Log out")
+        print("1:Refresh\n2:Show all messages\n3.Show the latest message\n4.Reply a message\n5.Reply the latest message\n6.Send a message\n7.Log out")
         op = input("Please type a number above:")
+        if op:
+            op = int(op)
         print("=================")
         if op == 2:
             if newMsgCount == 0:
@@ -64,27 +66,49 @@ def listen():
         elif op == 4:
             if newMsgCount == 0:
                 print("No received message!")
-                continue
-            toNum = int(input("Which message do you want to reply? Type the number of it: "))
-            if toNum < 0 or toNum >= newMsgCount:
-                print("Wrong number!")
-                continue
-            tmpMsg = newMsg[toNum]
-            print("[Message No.%s]\nFrom: %s\nBody:\n%s\n" % (toNum, tmpMsg['from'], tmpMsg['body']))
-            content = input("Your reply: ")
-            tmpMsg.reply(content).send()
-            print("Seccessful!")
+            else:
+                toNum = int(input("Which message do you want to reply? Type the number of it: "))
+                if toNum < 0 or toNum >= newMsgCount:
+                    print("Wrong number!")
+                else:
+                    tmpMsg = newMsg[toNum]
+                    print("[Message No.%s]\nFrom: %s\nBody:\n%s\n" % (toNum, tmpMsg['from'], tmpMsg['body']))
+                    content = input("Your reply: ")
+                    if content:
+                        tmpMsg.reply(content).send()
+                        print("Seccessful!")
+                    else:
+                        print("No input!")
         elif op == 5:
+            if newMsgCount == 0:
+                print("No received message!")
+            else:
+                toNum = newMsgCount - 1
+                tmpMsg = newMsg[toNum]
+                print("[Message No.%s]\nFrom: %s\nBody:\n%s\n" % (toNum, tmpMsg['from'], tmpMsg['body']))
+                content = input("Your reply: ")
+                if content:
+                    tmpMsg.reply(content).send()
+                    print("Seccessful!")
+                else:
+                    print("No input!")
+        elif op == 6:
             to = input("Who do you want to send to? Type the address: ")
             if re.match("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,3}|[0-9]{1,3})(\\]?)$", to) == None:
                 print("Wrong address!")
-                continue
-            content = input("Your message: ")
-            xmpp.send_message(mto=to, mbody=content, mtype='chat')
-            print("Seccessful!")
-        elif op == 6:
+            else:
+                content = input("Your message: ")
+                if content:
+                    xmpp.send_message(mto=to, mbody=content, mtype='chat')
+                    print("Seccessful!")
+                else:
+                    print("No input!")
+        elif op == 7:
             xmpp.disconnect(wait=True)
             break
+        else:
+            continue
+        tmp = input("\n<Press any key to continue...>")
 
 class XMPPClient(sleekxmpp.ClientXMPP):
 
