@@ -104,20 +104,43 @@ def listen():
                 else:
                     print("No input!")
         elif op == 7:
+            connected = 0
             xmpp.disconnect(wait=True)
             break
         else:
             continue
         tmp = input("\n<Press any key to continue...>")
 
+def guard():
+    global connected
+    while not connected:
+        time.sleep(1)
+    while 1:
+        if not connected:
+            break
+        try:
+            rtt = xmpp['xep_0199'].ping(xmpp.pingjid, timeout=10)
+        except IqError as e:
+            logging.info("Error pinging %s: %s",
+                    xmpp.pingjid,
+                    e.iq['error']['condition'])
+        except IqTimeout:
+            logging.info("No response from %s", xmpp.pingjid)
+        time.sleep(3)
+
 class XMPPClient(sleekxmpp.ClientXMPP):
 
     def __init__(self, jid, password):
         sleekxmpp.ClientXMPP.__init__(self, jid, password)
 
+        pingjid = self.boundjid.bare
+        self.pingjid = pingjid
+        
         self.add_event_handler("session_start", self.start)
         self.add_event_handler("message", self.message)
         
+        demon = threading.Thread(target=guard, name='guard')
+        demon.start()
         menu = threading.Thread(target=listen, name='listen')
         menu.start()
 
