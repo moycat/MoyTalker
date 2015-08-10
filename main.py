@@ -45,11 +45,9 @@ def listen():
         print("=================")
         print("Now you have", newMsgCount, "received massages.")
         print("1:Refresh\n2:Show all messages\n3.Show the latest message\n4.Reply a message\n5.Send a message\n6.Log out")
-        op = int(input("Please type a number above:"))
+        op = input("Please type a number above:")
         print("=================")
-        if op == 1:
-            pass
-        elif op == 2:
+        if op == 2:
             if newMsgCount == 0:
                 print("No received message!")
             else:
@@ -113,7 +111,6 @@ class XMPPClient(sleekxmpp.ClientXMPP):
             newMsg.append(msg)
             fom = str(msg['from'])
             print('\n{New message got! From %s}' % fom.split('/', 1)[0])
-            #msg.reply("Thanks for sending\n%(body)s" % msg).send()
 
 
 if __name__ == '__main__':
