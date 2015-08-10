@@ -115,23 +115,6 @@ def listen():
             continue
         tmp = input("\n<Press enter to continue...>")
 
-def guard():
-    global connected
-    while not connected:
-        time.sleep(1)
-    while 1:
-        if not connected:
-            break
-        try:
-            rtt = xmpp['xep_0199'].ping(xmpp.pingjid, timeout=10)
-        except IqError as e:
-            logging.info("Error pinging %s: %s",
-                    xmpp.pingjid,
-                    e.iq['error']['condition'])
-        except IqTimeout:
-            logging.info("No response from %s", xmpp.pingjid)
-        time.sleep(3)
-
 class XMPPClient(sleekxmpp.ClientXMPP):
 
     def __init__(self, jid, password):
@@ -143,7 +126,7 @@ class XMPPClient(sleekxmpp.ClientXMPP):
         self.add_event_handler("session_start", self.start)
         self.add_event_handler("message", self.message)
         
-        demon = threading.Thread(target=guard, name='guard')
+        demon = threading.Thread(target=self.guard, name='guard')
         demon.start()
         menu = threading.Thread(target=listen, name='listen')
         menu.start()
@@ -162,6 +145,23 @@ class XMPPClient(sleekxmpp.ClientXMPP):
             newMsg.append(msg)
             fom = str(msg['from'])
             print('\n{New message got! From %s}' % fom.split('/', 1)[0])
+
+    def guard(self):
+        global connected
+        while not connected:
+            time.sleep(1)
+        while 1:
+            if not connected:
+                break
+            try:
+                rtt = self['xep_0199'].ping(self.pingjid, timeout=10)
+            #except IqError as e:
+            #    logging.info("Error pinging %s: %s", self.pingjid, e.iq['error']['condition'])
+            #except IqTimeout:
+            #    logging.info("No response from %s", self.pingjid)
+            except:
+                print("Something wrong. You may have lost your connection.")
+            time.sleep(30)
 
 
 if __name__ == '__main__':
