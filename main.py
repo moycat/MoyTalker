@@ -46,11 +46,8 @@ def listen():
         print("Now you have", newMsgCount, "received massages.")
         print("1:Refresh\n2:Show all messages\n3.Show the latest message\n4.Reply a message\n5.Reply the latest message\n6.Send a message\n7.Log out")
         op = input("Please type a number above:")
-        try:
+        if op:
             op = int(op)
-        except:
-            print("Wrong input!")
-            continue
         print("=================")
         if op == 2:
             if newMsgCount == 0:
